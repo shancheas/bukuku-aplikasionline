@@ -34,7 +34,7 @@ class BaseConnection
         $data = $this->arrayToStatement($record);
         $var = $data['var'];
         $values = $data['values'];
-        $fields = $data['fields'];
+        $fields = $this->buildStmtField($data['fields']);
         $query = "INSERT INTO $this->table $fields VALUES $var";
 
         $stmt = $this->execute($query, $values, $data['types']);
@@ -57,6 +57,20 @@ class BaseConnection
         }
 
         return $results;
+    }
+
+    public function where(array $params, $glue = 'AND') {
+        $data = $this->arrayToStatement($params);
+        $values = $data['values'];
+        $fields = $data['fields'];
+        $query = "SELECT * FROM $this->table WHERE ";
+        $fields = array_map(function ($item) {
+            return $item . ' = ? ';
+        }, $fields);
+        $args = implode(" $glue ", $fields);
+
+        $stmt = $this->execute($query . $args, $values, $data['types']);
+        return $stmt->fetch_object();
     }
 
     public function getAll() {
@@ -102,7 +116,7 @@ class BaseConnection
         }
 
         return [
-            'fields' => $this->buildStmtField($fields),
+            'fields' => $fields,
             'values' => $values,
             'var' => $this->buildStmtField($var),
             'types' => $types
