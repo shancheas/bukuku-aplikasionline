@@ -1,3 +1,10 @@
+<?php
+session_start();
+
+if (isset($_SESSION['user']))
+    header('location: profile.php');
+?>
+
 <!DOCTYPE html>
 <html lang="zxx">
 <head>
@@ -38,7 +45,7 @@ require_once "components/navbar.php";
                         <input type="email" placeholder="Email" name="email">
                         <input type="password" placeholder="Password" name="password">
                         <?php
-                            session_start();
+//                            session_start();
                             if (isset($_SESSION['message'])) {
                                 echo '<span style="color: red">'. $_SESSION['message'] .'</span>';
                                 unset($_SESSION['message']);

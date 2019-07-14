@@ -65,7 +65,7 @@ require_once "components/navbar.php";
                         <td class="product-col">
                             <img src="<?= $book->cover?>" alt="<?= $book->judul?>">
                             <div class="pc-title">
-                                <h4><?= $book->judul?></h4>
+                                <h4 id="title-book<?= $book->id?>"><?= $book->judul?></h4>
                             </div>
                         </td>
                         <td class="price-col">Rp. <?= number_format($book->harga)?></td>
@@ -119,7 +119,11 @@ require_once "components/navbar.php";
                             <li>Shipping<span id="ongkir">Free</span></li>
                             <li class="total">Total<span id="total-all">$59.90</span></li>
                         </ul>
-                        <a class="site-btn btn-full" href="checkout.html">Proceed to checkout</a>
+                        <form method="post" action="checkout.php" id="cart-form">
+                            <input type="hidden" name="cart">
+                            <input type="hidden" name="ongkir">
+                            <a class="site-btn btn-full" id="btn-checkout" href="javascript:void(0)">Proceed to checkout</a>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -149,29 +153,49 @@ require_once "components/js.php";
 <script>
     let total = 0;
     let ongkir = 22000;
+    let items = [];
     countTotal();
     $('#clear-cart').on('click', e => {
         clearCart();
         $.post(`api/cart.php`, {ids: JSON.stringify(getCart())}, response => {
-            console.log(response);
             window.location = 'cart.php';
         })
     });
 
-    $(document).on('change', '.btn-qty', e => {
+    $('.btn-qty').on('change', e => {
        $this = $(e.target);
        const id = $this.data('id');
        const price = $this.data('price');
        const qty = $this.val();
 
+       items[id] = {
+           'id': id,
+           'price': price,
+           'qty': qty,
+           'title': $(`#title-book${id}`).text()
+       };
+
        $(`#total-book${id}`).text(`Rp ${numberFormat(price * qty)}`);
        $(`#total-book${id}`).data('total', price * qty);
-        countTotal();
+       countTotal();
     });
 
     $('input[type=radio][name=sc]').change(function() {
         ongkir = this.value;
         countTotal();
+    });
+
+    $('#btn-checkout').click(e => {
+        e.preventDefault();
+        let cart = [];
+        items.forEach(item => {
+            cart.push({
+                ...item
+            });
+        });
+        $('input[name=cart]').val(JSON.stringify(cart));
+        $('input[name=ongkir]').val(ongkir);
+        $('#cart-form').submit();
     });
 
     function countTotal() {
@@ -181,9 +205,9 @@ require_once "components/js.php";
         }
         $('#subtotal').text(`Rp ${numberFormat(total)}`);
         $('#ongkir').text(`Rp ${numberFormat(ongkir)}`);
-        console.log(total + ongkir);
         $('#total-all').text(`Rp ${numberFormat(parseInt(total) + parseInt(ongkir))}`);
     }
+    $('.btn-qty').change();
 </script>
 </body>
 </html>

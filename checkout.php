@@ -1,3 +1,17 @@
+<?php
+session_start();
+if (is_null($_SESSION['user'])){
+    header('location: login.php');
+}
+
+$cart = isset($_POST['cart']) ? json_decode($_POST['cart']) : [];
+$ongkir = isset($_POST['ongkir']) ? $_POST['ongkir'] : 0;
+$subtotal = array_map(function ($item) {
+    return $item->price * $item->qty;
+}, $cart);
+
+$total = array_sum($subtotal) + $ongkir;
+?>
 <!DOCTYPE html>
 <html lang="zxx">
 <head>
@@ -47,7 +61,7 @@ require_once "components/navbar.php";
                         <div class="col-md-12">
 
                             <input type="text" placeholder="Phone no *">
-                            <textarea placeholder="Email Address *" rows="4" style="height: 200px;" ></textarea>
+                            <textarea placeholder="Address" rows="4" style="height: 200px;" ></textarea>
                             <div class="checkbox-items">
                                 <div class="ci-item">
                                     <input type="checkbox" name="a" id="tandc">
@@ -70,39 +84,33 @@ require_once "components/navbar.php";
                                     </tr>
                                     </thead>
                                     <tbody>
+                                    <?php foreach ($cart as $item):?>
                                     <tr>
-                                        <td>Cocktail Yellow dress</td>
-                                        <td>$59.90</td>
+                                        <td><?= $item->title . ' * ' . $item->qty . ' Qty'?></td>
+                                        <td>Rp. <?= number_format(($item->price * $item->qty))?></td>
                                     </tr>
+                                    <?php endforeach;?>
                                     <tr>
                                         <td>SubTotal</td>
-                                        <td>$59.90</td>
+                                        <td>Rp. <?= number_format(array_sum($subtotal))?></td>
                                     </tr>
                                     <tr class="cart-subtotal">
                                         <td>Shipping</td>
-                                        <td>Free</td>
+                                        <td>Rp. <?= $ongkir?></td>
                                     </tr>
                                     </tbody>
                                     <tfoot>
                                     <tr class="order-total">
                                         <th>Total</th>
-                                        <th>$59.90</th>
+                                        <th>Rp. <?= $total?></th>
                                     </tr>
                                     </tfoot>
                                 </table>
                             </div>
                             <div class="payment-method">
                                 <div class="pm-item">
-                                    <input type="radio" name="pm" id="one">
-                                    <label for="one">Paypal</label>
-                                </div>
-                                <div class="pm-item">
                                     <input type="radio" name="pm" id="two">
                                     <label for="two">Cash on delievery</label>
-                                </div>
-                                <div class="pm-item">
-                                    <input type="radio" name="pm" id="three">
-                                    <label for="three">Credit card</label>
                                 </div>
                                 <div class="pm-item">
                                     <input type="radio" name="pm" id="four" checked>

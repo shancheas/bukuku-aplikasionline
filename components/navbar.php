@@ -14,7 +14,7 @@
         </div>
         <div class="header-right">
             <a href="javascript:void(0)" id="main-cart" class="card-bag"><img src="assets/img/icons/bag.png" alt=""><span id="total-item">2</span></a>
-            <a href="#" class="search"><img src="assets/img/icons/profile.png" alt=""></a>
+            <a href="profile.php" class="search"><img src="assets/img/icons/profile.png" alt=""></a>
         </div>
 
 <!--        <ul class="main-menu">-->
