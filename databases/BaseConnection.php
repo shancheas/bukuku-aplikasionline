@@ -41,6 +41,24 @@ class BaseConnection
         return $stmt;
     }
 
+    public function whereIn($field, array $record) {
+        $data = $this->arrayToStatement($record);
+        $var = $data['var'];
+        $values = $data['values'];
+        $query = "SELECT * FROM $this->table WHERE $field IN $var";
+
+        $stmt = $this->execute($query, $values, $data['types']);
+        $results = [];
+
+        if ($stmt->num_rows > 0) {
+            while($row = $stmt->fetch_object()) {
+                array_push($results, $row);
+            }
+        }
+
+        return $results;
+    }
+
     public function getAll() {
         $query = "SELECT * FROM $this->table";
         $result = $this->connection->query($query);

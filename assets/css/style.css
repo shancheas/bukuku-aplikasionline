@@ -237,7 +237,7 @@ ol {
 .header-section.header-normal {
 	position: relative;
 	overflow: visible;
-	padding: 32px 34px 58px;
+	/*padding: 32px 34px 58px;*/
 	background: #f0f9ff;
 	background: -webkit-gradient(linear, left top, right top, from(#f0f9ff), color-stop(0%, #aa7ad0), to(#d07acd));
 	background: -o-linear-gradient(left, #f0f9ff 0%, #aa7ad0 0%, #d07acd 100%);
@@ -248,7 +248,7 @@ ol {
 .site-logo {
 	display: inline-block;
 	padding-top: 0;
-	float: left;
+	/*float: left;*/
 }
 
 .nav-switch {
@@ -1374,6 +1374,7 @@ ol {
 	margin-bottom: 50px;
 }
 
+.checkout-form textarea,
 .checkout-form input[type=text],
 .checkout-form input[type=email],
 .checkout-form input[type=password],
@@ -1386,6 +1387,7 @@ ol {
 	margin-bottom: 25px;
 	color: #414141;
 	padding: 5px 20px;
+	resize: none;
 }
 
 .checkbox-items .ci-item:last-child label {

@@ -31,31 +31,15 @@ $book = $data->get($id);
     <div class="loader"></div>
 </div>
 
-<!-- Header section -->
-<header class="header-section header-normal">
-    <div class="container-fluid">
-        <!-- logo -->
-        <div class="site-logo">
-            <img src="assets/img/logo.png" width="200px"alt="bukuku">
-        </div>
-        <!-- responsive -->
-        <div class="nav-switch">
-            <i class="fa fa-bars"></i>
-        </div>
-        <!-- site menu -->
-        <ul class="main-menu">
-            <li><a href="index.html">Home</a></li>
-        </ul>
-    </div>
-</header>
-<!-- Header section end -->
-
+<?php
+require_once "components/navbar.php";
+?>
 
 <!-- Page -->
 <div class="page-area product-page spad">
     <div class="container">
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-4 offset-1">
                 <figure>
                     <img class="product-big-img" src="<?= $book->cover?>" width= "300px" height="457px" alt="">
                 </figure>
@@ -69,7 +53,8 @@ $book = $data->get($id);
                         </div>
                     </div>
                     <p><?= $book->sinopsis?></p>
-                    <a href="cart.php" class="site-btn btn-line">ADD TO CART</a>
+                    <a href="javascript:void(0)" data-id="<?= $book->id ?>" id="book-<?= $book->id?>" class="site-btn btn-line cart-btn">ADD
+                        TO CART</a>
                 </div>
             </div>
         </div>
@@ -91,12 +76,23 @@ $book = $data->get($id);
 
 
 <!--====== Javascripts & Jquery ======-->
-<script src="assets/js/jquery-3.2.1.min.js"></script>
-<script src="assets/js/bootstrap.min.js"></script>
-<script src="assets/js/owl.carousel.min.js"></script>
-<script src="assets/js/mixitup.min.js"></script>
-<script src="assets/js/sly.min.js"></script>
-<script src="assets/js/jquery.nicescroll.min.js"></script>
-<script src="assets/js/main.js"></script>
+<?php
+require_once "components/js.php";
+?>
+<script>
+    const bookId = "<?= $_GET['id']?>";
+    for (var id of getCart()) {
+        if (id == bookId)
+            toggleButton(`#book-${id}`);
+    }
+    $(document).on('click', '.cart-btn', (e) => {
+        toggleButton(e.target);
+        const bookId = $(e.target).data('id');
+        toggleCart(bookId);
+        var cart = getCart();
+        console.log({bookId, cart});
+        $('#total-item').text(cartCount());
+    });
+</script>
 </body>
 </html>

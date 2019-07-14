@@ -24,24 +24,9 @@
     <div class="loader"></div>
 </div>
 
-<!-- Header section -->
-<header class="header-section header-normal">
-    <div class="container-fluid">
-        <!-- logo -->
-        <div class="site-logo">
-            <img src="assets/img/logo.png" width="50px" height="50px" alt="logo">
-        </div>
-        <!-- responsive -->
-        <div class="nav-switch">
-            <i class="fa fa-bars"></i>
-        </div>
-        <!-- site menu -->
-        <ul class="main-menu">
-            <li><a href="index.html">Home</a></li>
-        </ul>
-    </div>
-</header>
-<!-- Header section end -->
+<?php
+require_once "components/navbar.php";
+?>
 
 
 
@@ -54,43 +39,19 @@
                     <h4 class="checkout-title">Billing Address</h4>
                     <div class="row">
                         <div class="col-md-6">
-                            <input type="text" placeholder="First Name *">
+                            <input type="text" placeholder="First Name">
                         </div>
                         <div class="col-md-6">
-                            <input type="text" placeholder="Last Name *">
+                            <input type="text" placeholder="Last Name">
                         </div>
                         <div class="col-md-12">
-                            <input type="text" placeholder="Company">
-                            <select>
-                                <option>Country *</option>
-                                <option>USA</option>
-                                <option>UK</option>
-                                <option>BANGLADESH</option>
-                            </select>
-                            <input type="text" placeholder="Address *">
-                            <input type="text">
-                            <input type="text" placeholder="Zipcode *">
-                            <select>
-                                <option>City/Town *</option>
-                            </select>
-                            <select>
-                                <option>Province *</option>
-                            </select>
+
                             <input type="text" placeholder="Phone no *">
-                            <input type="email" placeholder="Email Address *">
+                            <textarea placeholder="Email Address *" rows="4" style="height: 200px;" ></textarea>
                             <div class="checkbox-items">
                                 <div class="ci-item">
                                     <input type="checkbox" name="a" id="tandc">
                                     <label for="tandc">Terms and conditions</label>
-                                </div>
-                                <div class="ci-item">
-                                    <input type="checkbox" name="b" id="newaccount">
-                                    <label for="newaccount">Create an account</label>
-                                    <input type="password" placeholder="password">
-                                </div>
-                                <div class="ci-item">
-                                    <input type="checkbox" name="c" id="newsletter">
-                                    <label for="newsletter">Subscribe to our newsletter</label>
                                 </div>
                             </div>
                         </div>
@@ -174,12 +135,8 @@
 
 
 <!--====== Javascripts & Jquery ======-->
-<script src="assets/js/jquery-3.2.1.min.js"></script>
-<script src="assets/js/bootstrap.min.js"></script>
-<script src="assets/js/owl.carousel.min.js"></script>
-<script src="assets/js/mixitup.min.js"></script>
-<script src="assets/js/sly.min.js"></script>
-<script src="assets/js/jquery.nicescroll.min.js"></script>
-<script src="assets/js/main.js"></script>
+<?php
+require_once "components/js.php";
+?>
 </body>
 </html>
