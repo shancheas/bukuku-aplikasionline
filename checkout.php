@@ -4,7 +4,12 @@ if (is_null($_SESSION['user'])){
     header('location: login.php');
 }
 
+$customer = $_SESSION['customer'];
+
 $cart = isset($_POST['cart']) ? json_decode($_POST['cart']) : [];
+if (empty($cart)) {
+    header('location: cart.php');
+}
 $ongkir = isset($_POST['ongkir']) ? $_POST['ongkir'] : 0;
 $subtotal = array_map(function ($item) {
     return $item->price * $item->qty;
@@ -47,27 +52,21 @@ require_once "components/navbar.php";
 <!-- Page -->
 <div class="page-area cart-page spad">
     <div class="container">
-        <form class="checkout-form">
+        <form class="checkout-form" method="post" action="api/checkout.php">
             <div class="row">
                 <div class="col-lg-6">
                     <h4 class="checkout-title">Billing Address</h4>
                     <div class="row">
                         <div class="col-md-6">
-                            <input type="text" placeholder="First Name">
+                            <input type="text" placeholder="First Name" name="firstname" value="<?= $customer->firstname?>" required>
                         </div>
                         <div class="col-md-6">
-                            <input type="text" placeholder="Last Name">
+                            <input type="text" placeholder="Last Name" name="lastname" value="<?= $customer->lastname?>" required>
                         </div>
                         <div class="col-md-12">
 
-                            <input type="text" placeholder="Phone no *">
-                            <textarea placeholder="Address" rows="4" style="height: 200px;" ></textarea>
-                            <div class="checkbox-items">
-                                <div class="ci-item">
-                                    <input type="checkbox" name="a" id="tandc">
-                                    <label for="tandc">Terms and conditions</label>
-                                </div>
-                            </div>
+                            <input type="text" placeholder="Phone no *"  name="phone" required>
+                            <textarea placeholder="Address" rows="4" style="height: 200px;" name="address" ></textarea>
                         </div>
                     </div>
                 </div>
@@ -109,16 +108,17 @@ require_once "components/navbar.php";
                             </div>
                             <div class="payment-method">
                                 <div class="pm-item">
-                                    <input type="radio" name="pm" id="two">
+                                    <input type="radio" id="two">
                                     <label for="two">Cash on delievery</label>
                                 </div>
                                 <div class="pm-item">
-                                    <input type="radio" name="pm" id="four" checked>
+                                    <input type="radio" id="four" checked>
                                     <label for="four">Direct bank transfer</label>
                                 </div>
                             </div>
                         </div>
-                        <button class="site-btn btn-full">Place Order</button>
+                        <input type="hidden" name="books" value='<?= $_POST['cart']?>'>
+                        <button type="submit" class="site-btn btn-full">Place Order</button>
                     </div>
                 </div>
             </div>
@@ -146,5 +146,17 @@ require_once "components/navbar.php";
 <?php
 require_once "components/js.php";
 ?>
+<script>
+    $('.checkout-form').validate({
+        rules: {
+            address: {
+                required: true
+            },
+            phone: {
+                number: true
+            }
+        }
+    });
+</script>
 </body>
 </html>

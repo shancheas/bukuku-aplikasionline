@@ -51,7 +51,11 @@ require_once "components/navbar.php";
                                 unset($_SESSION['message']);
                             }
                         ?>
-                        <input type="submit" class="site-btn btn-full" value="LOGIN" />
+                        <div class="product-info text-center">
+                            <input type="submit" class="site-btn btn-full" value="LOGIN" />
+                            <div class="p-4">OR</div>
+                            <a href="register.php" class="site-btn btn-full" >REGISTER</a>
+                        </div>
                     </form>
                 </div>
             </div>

@@ -38,9 +38,9 @@ require_once "components/navbar.php";
             <div class="offset-4 col-md-4 card-warp p-4" style="background: #fff">
                 <div class="cart-total-details">
                     <div class="text-center">
-                        <h4 class="contact-title">LOGIN</h4>
+                        <h4 class="contact-title">REGISTER</h4>
                     </div>
-                    <form class="contact-form" method="post" action="api/login.php">
+                    <form class="contact-form" method="post" action="api/register.php">
                         <input type="text" placeholder="First Name" name="firstname">
                         <input type="text" placeholder="Last name" name="lastname">
                         <input type="email" placeholder="Email" name="email">
@@ -80,6 +80,30 @@ require_once "components/navbar.php";
 <?php
 require_once "components/js.php";
 ?>
+
+<script>
+    $('.contact-form').validate({
+        rules: {
+            firstname: {
+                required: true,
+                minlength: 3
+            },
+            lastname: {
+                required: true,
+                minlength: 1
+            },
+            email: {
+                required: true,
+                email: true,
+                minlength: 10
+            },
+            password: {
+                required: true,
+                minlength: 6
+            }
+        }
+    });
+</script>
 
 
 </body>

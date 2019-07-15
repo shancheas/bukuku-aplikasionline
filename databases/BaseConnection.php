@@ -18,7 +18,7 @@ class BaseConnection
     private function connect(){
         $this->host = 'localhost';
         $this->user = 'root';
-        $this->pass = '';
+        $this->pass = 'comnet123!';
         $this->db = 'bukuku';
 
         $this->connection = new mysqli($this->host, $this->user, $this->pass, $this->db);
@@ -71,6 +71,28 @@ class BaseConnection
 
         $stmt = $this->execute($query . $args, $values, $data['types']);
         return $stmt->fetch_object();
+    }
+
+    public function where2(array $params, $glue = 'AND') {
+        $data = $this->arrayToStatement($params);
+        $values = $data['values'];
+        $fields = $data['fields'];
+        $query = "SELECT * FROM $this->table WHERE ";
+        $fields = array_map(function ($item) {
+            return $item . ' = ? ';
+        }, $fields);
+        $args = implode(" $glue ", $fields);
+
+        $stmt = $this->execute($query . $args, $values, $data['types']);
+        $results = [];
+
+        if ($stmt->num_rows > 0) {
+            while($row = $stmt->fetch_object()) {
+                array_push($results, $row);
+            }
+        }
+
+        return $results;
     }
 
     public function getAll() {

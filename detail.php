@@ -1,9 +1,23 @@
 <?php
 require_once "databases/Books.php";
+require_once "databases/Transaction.php";
+require_once "databases/Details.php";
 session_start();
 $data = new Books();
-$ids = $_SESSION['ids'];
-$books = empty($ids) ? [] : $data->whereIn('id', $ids);
+$ids = $_GET['id'];
+
+$transaction = new Transaction();
+$t = $transaction->where(['nomor_transaksi' => $ids]);
+
+$detail = new Details();
+$details = $detail->where2(['transaksi_id' => $t->id]);
+$books = [];
+
+foreach ($details as $d) {
+    var_dump($d);
+    $book = $data->where(['id' => $d->buku_id]);
+    array_push($books, $book);
+}
 ?>
 
 <!DOCTYPE html>
@@ -39,7 +53,7 @@ require_once "components/navbar.php";
 <div class="page-info-section page-info">
     <div class="container">
         <div class="site-breadcrumb">
-            <h1>Shopping Cart</h1>
+            <h1>Detail Transaksi</h1>
         </div>
         <img src="assets/img/page-info-art.png" alt="" class="page-info-art">
     </div>
